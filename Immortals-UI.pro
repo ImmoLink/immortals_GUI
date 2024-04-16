@@ -1,6 +1,15 @@
 QT += quick
 
-CONFIG += c++11
+CONFIG += c++20
+
+# Add include paths for gRPC headers
+INCLUDEPATH += C:/msys64/mingw64/include
+
+# Link against gRPC library
+LIBS += -LC:\msys64\mingw64\lib -lgrpc
+
+# Link against gRPC dependencies
+#LIBS += -LC:\Program Files (x86)\grpc\lib
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
