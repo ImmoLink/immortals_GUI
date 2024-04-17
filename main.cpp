@@ -1,5 +1,20 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <grpcpp/grpcpp.h>
+#include <immo.pb.h>
+
+using grpc::Channel;
+using grpc::ClientContext;
+using grpc::Status;
+using namespace immo;
+
+class ImmoClient {
+public:
+    ImmoClient(std::shared_ptr<Channel> channel) : stub_(immo::NewStub(channel)) {}
+
+private:
+    std::unique_ptr<immo::Stub> stub_;
+};
 
 int main(int argc, char *argv[])
 {
