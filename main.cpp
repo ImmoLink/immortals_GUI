@@ -1,19 +1,21 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <grpcpp/grpcpp.h>
-#include <immo.pb.h>
+#include <immo.grpc.pb.h>
+#include <iostream>
 
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 using namespace immo;
+using namespace std;
 
 class ImmoClient {
 public:
-    ImmoClient(std::shared_ptr<Channel> channel) : stub_(immo::NewStub(channel)) {}
+    ImmoClient(std::shared_ptr<Channel> channel) : stub_(ImmoService::NewStub(channel)) { cout << "New Client"; }
 
 private:
-    std::unique_ptr<immo::Stub> stub_;
+    std::unique_ptr<ImmoService::Stub> stub_;
 };
 
 int main(int argc, char *argv[])
@@ -31,5 +33,12 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
+    // Create gRPC channel
+    std::shared_ptr<Channel> channel = grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials());
+
+    // Create gRPC client
+    ImmoClient client(channel);
+
+    // Run event loop
     return app.exec();
 }
