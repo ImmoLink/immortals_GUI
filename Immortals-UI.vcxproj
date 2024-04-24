@@ -42,8 +42,8 @@
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>5.13.1</QtInstall>
-    <QtModules>quick</QtModules>
+    <QtInstall>6.7.0_msvc2019_64</QtInstall>
+    <QtModules>quick;quickcontrols2;quicklayouts</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -99,15 +99,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="client.cc" />
     <ClCompile Include="immo.grpc.pb.cc" />
     <ClCompile Include="immo.pb.cc" />
+    <ClCompile Include="immoclient.cpp" />
     <ClCompile Include="main.cpp" />
     <QtRcc Include="qml.qrc" />
+    <None Include="immo.proto" />
     <None Include="main.qml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="client.h" />
     <ClInclude Include="immo.grpc.pb.h" />
     <ClInclude Include="immo.pb.h" />
+    <QtMoc Include="immoclient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

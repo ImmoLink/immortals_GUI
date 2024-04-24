@@ -38,6 +38,12 @@
     <ClCompile Include="immo.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="client.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="immoclient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="immo.grpc.pb.h">
@@ -46,5 +52,16 @@
     <ClInclude Include="immo.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="immo.proto" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="immoclient.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
