@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/qt/qml/immortals-ui">
-        <file>main.qml</file>
-    </qresource>
-</RCC>
