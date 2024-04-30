@@ -11,9 +11,17 @@ Window {
     visible: true
     title: "Immortals_GUI"
 
+
     Screen01 {
         id: mainScreen
     }
 
+    ImmoPanel {
+        id: panel
+        width: parent.width * 0.5
+        height: parent.height * 0.12
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
 }
 
