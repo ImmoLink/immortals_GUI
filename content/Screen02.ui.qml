@@ -25,7 +25,7 @@ Rectangle {
 
     Text {
         id: label
-        text: qsTr("Home Page")
+        text: qsTr("Automation Page")
         font.family: Constants.font.family
         anchors.top: button.bottom
         anchors.topMargin: 45

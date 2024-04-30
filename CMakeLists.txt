@@ -10,6 +10,7 @@ set(CMAKE_AUTOMOC ON)
 include("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
 
 find_package(gRPC CONFIG REQUIRED)
+
 find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick)
 
 if (Qt6_VERSION VERSION_GREATER_EQUAL 6.3)

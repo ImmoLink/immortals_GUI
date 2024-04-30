@@ -3,30 +3,57 @@ import QtQuick.Controls 6.5
 import QtQuick.Shapes
 
 Shape {
-    id: panel
+    id: shape
+    width: 960
+    height: 120
     ShapePath {
         strokeWidth: 4
-        strokeColor: "blue"
-        startX: 0; startY: 130
-        PathLine { relativeX: parent.width * 0.05}
-        PathLine { relativeX: parent.width * .40}
-        PathLine { relativeX: parent.width * 0.05 ; y:  130}
+        fillColor: "grey"
+        strokeColor: "#00abff"
+        startX: 0; startY: 120
+        PathLine { x: 50; y: 0}
+        PathLine { x: 910; y: 0}
+        PathLine { x: 960; y: 120}
     }
     Row {
+        spacing: parent.width * 0.2
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: panel.width * 0.2
         Button {
-            id: button1
+            id: homeButton
             text: qsTr("Home")
-        } 
+
+            Connections {
+                target: homeButton
+                onClicked: {
+                    homeScreen.visible = true
+                    autoScreen.visible = false
+                }
+            }
+        }
         Button {
-            id: button2
+            id: automationButton
             text: qsTr("Automation")
-        } 
+
+            Connections {
+                target: automationButton
+                onClicked: {
+                    homeScreen.visible = false
+                    autoScreen.visible = true
+                }
+            }
+        }
         Button {
-            id: button3
+            id: settingsButton
             text: qsTr("Settings")
-        } 
+
+            Connections {
+                target: settingsButton
+                onClicked: {
+                    homeScreen.visible = false
+                    autoScreen.visible = false
+                }
+            }
+        }
     }
 }

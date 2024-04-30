@@ -5,21 +5,23 @@ import QtQuick 6.5
 import Immortals_GUI
 
 Window {
-    width: mainScreen.width
-    height: mainScreen.height
-
+    id: window
+    width: homeScreen.width
+    height: homeScreen.height
     visible: true
     title: "Immortals_GUI"
 
-
     Screen01 {
-        id: mainScreen
+        id: homeScreen
+    }
+
+    Screen02 {
+        id: autoScreen
+        visible: false
     }
 
     ImmoPanel {
         id: panel
-        width: parent.width * 0.5
-        height: parent.height * 0.12
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
     }
