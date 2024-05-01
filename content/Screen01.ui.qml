@@ -10,57 +10,72 @@ Rectangle {
 
     color: Constants.backgroundColor
 
-    Button {
-        id: button
-        text: qsTr("Press Me")
-        anchors.verticalCenter: parent.verticalCenter
+    Flickable {
+        id: flickable
+        x: 148
+        y: 169
+        width: 1100
+        height: 320
+        flickableDirection: Flickable.HorizontalFlick
+        boundsBehavior: Flickable.DragOverBounds
+        contentWidth: gridView.width
         anchors.horizontalCenter: parent.horizontalCenter
-        checkable: true
+        clip: true
+        GridView {
+            id: gridView
+            width: rectangle.width * 0.8
+            height: 300
+            model: ListModel {
+                ListElement {
+                    name: "Grey"
+                    colorCode: "grey"
+                }
 
-        Connections {
-            target: button
-            onClicked: animation.start()
+                ListElement {
+                    name: "Red"
+                    colorCode: "red"
+                }
+
+                ListElement {
+                    name: "Blue"
+                    colorCode: "blue"
+                }
+
+                ListElement {
+                    name: "Grey"
+                    colorCode: "grey"
+                }
+
+                ListElement {
+                    name: "Red"
+                    colorCode: "red"
+                }
+            }
+            delegate: Item {
+                x: 5
+                height: 50
+                Column {
+                    spacing: 5
+                    Rectangle {
+                        width: 300
+                        height: 300
+                        color: colorCode
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+
+                    Text {
+                        x: 5
+                        text: name
+                        font.bold: true
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+            }
+            cellWidth: 300
+            cellHeight: 300
         }
+
     }
 
-    Text {
-        id: label
-        text: qsTr("Home Page")
-        font.family: Constants.font.family
-        anchors.top: button.bottom
-        anchors.topMargin: 45
-        anchors.horizontalCenter: parent.horizontalCenter
 
-        SequentialAnimation {
-            id: animation
-
-            ColorAnimation {
-                id: colorAnimation1
-                target: rectangle
-                property: "color"
-                to: "#2294c6"
-                from: Constants.backgroundColor
-            }
-
-            ColorAnimation {
-                id: colorAnimation2
-                target: rectangle
-                property: "color"
-                to: Constants.backgroundColor
-                from: "#2294c6"
-            }
-        }
-    }
-
-    states: [
-        State {
-            name: "clicked"
-            when: button.checked
-
-            PropertyChanges {
-                target: label
-                text: qsTr("Button Checked")
-            }
-        }
-    ]
 }

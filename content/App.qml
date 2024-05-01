@@ -20,6 +20,11 @@ Window {
         visible: false
     }
 
+    AgentPanel {
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+    }
+
     ImmoPanel {
         id: panel
         anchors.bottom: parent.bottom

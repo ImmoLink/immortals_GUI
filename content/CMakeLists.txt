@@ -11,6 +11,10 @@ qt6_add_qml_module(content
         Screen01.ui.qml
         Screen02.ui.qml
         ImmoPanel.ui.qml
+        AgentPanel.qml
+        Addressbox.qml
+        Generalbox.qml
+        Grpcbox.qml
     RESOURCES
         fonts/fonts.txt
 )

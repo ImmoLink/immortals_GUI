@@ -8,7 +8,7 @@ Shape {
     height: 120
     ShapePath {
         strokeWidth: 4
-        fillColor: "grey"
+        fillColor: "#eaeaea"
         strokeColor: "#00abff"
         startX: 0; startY: 120
         PathLine { x: 50; y: 0}
