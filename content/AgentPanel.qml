@@ -87,31 +87,22 @@ Rectangle {
         anchors.top: toolBar.bottom
         width: parent.width
         height: 300
-        model: ListModel {
-            ListElement {
-                name: "Grey"
-                colorCode: "grey"
-            }
+        model: agentModel // Use the model retrieved from c++
 
-            ListElement {
-                name: "Red"
-                colorCode: "red"
-            }
+        delegate: Item {
+            width: listView.width
+            height: 50
 
-            ListElement {
-                name: "Blue"
-                colorCode: "blue"
-            }
+            Rectangle {
+                width: parent.width
+                height: 50
 
-            ListElement {
-                name: "Green"
-                colorCode: "green"
+                Text {
+                    anchors.centerIn: parent
+                    text: model.label !== undefined ? model.label : "Unknown Label"
+                    color: "white"
+                }
             }
-        }
-
-        delegate: ItemDelegate {
-                id: itemDelegate
-                text: qsTr("Item Delegate")
         }
     }
 }
