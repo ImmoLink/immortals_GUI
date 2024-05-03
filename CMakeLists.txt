@@ -11,13 +11,17 @@ include("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\vcpkg\
 
 find_package(gRPC CONFIG REQUIRED)
 
-find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick)
+find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick Sql)
 
 if (Qt6_VERSION VERSION_GREATER_EQUAL 6.3)
     qt_standard_project_setup()
 endif()
 
-qt_add_executable(Immortals_GUIApp src/main.cpp)
+qt_add_executable(Immortals_GUIApp
+    src/main.cpp 
+    src/initdb.cpp
+    src/agentModel.cpp
+)
 
 qt_add_resources(Immortals_GUIApp "configuration"
     PREFIX "/"
@@ -30,7 +34,15 @@ target_link_libraries(Immortals_GUIApp PRIVATE
     Qt6::Gui
     Qt6::Qml
     Qt6::Quick
+    Qt6::Sql
     gRPC::grpc++
+)
+
+qt_add_qml_module(MyQtDb
+    URI com.example
+    VERSION 1.0
+    SOURCES
+        src/initdb.cpp
 )
 
 set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/qml)
@@ -59,3 +71,6 @@ install(TARGETS Immortals_GUIApp
 # make IDEs aware of the QML import path
 set(QML_IMPORT_PATH ${PROJECT_BINARY_DIR}/qml CACHE PATH
     "Path to the custom QML components defined by the project")
+
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/content/icons DESTINATION ${CMAKE_BINARY_DIR}/qml/content/)
