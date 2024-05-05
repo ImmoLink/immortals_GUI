@@ -1,13 +1,17 @@
 // Copyright (C) 2021 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
+#include <QQmlContext>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QtSql>
 #include <grpcpp/grpcpp.h>
 
 #include "app_environment.h"
 #include "import_qml_components_plugins.h"
 #include "import_qml_plugins.h"
+#include "initdb.h"
+#include "agentModel.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +20,16 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    qmlRegisterType<InitDb>("com.example", 1, 0, "InitDb");
+
+    InitDb db;
+    // db.initDb();
+
+    AgentModel agentModel;
+
+    engine.rootContext()->setContextProperty("agentModel", &agentModel);
+
     const QUrl url(u"qrc:/qt/qml/Main/main.qml"_qs);
     QObject::connect(
                 &engine, &QQmlApplicationEngine::objectCreated, &app,
@@ -29,7 +43,7 @@ int main(int argc, char *argv[])
     engine.addImportPath(":/");
 
     engine.load(url);
-
+  
     if (engine.rootObjects().isEmpty()) {
         return -1;
     }

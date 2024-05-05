@@ -88,6 +88,7 @@ Rectangle {
         width: parent.width
         height: 300
         model: agentModel // Use the model retrieved from c++
+        Component.onCompleted: {console.log(agentModel.roleNames())}
 
         delegate: Item {
             width: listView.width
@@ -96,11 +97,15 @@ Rectangle {
             Rectangle {
                 width: parent.width
                 height: 50
+                color: "lightblue"
 
                 Text {
                     anchors.centerIn: parent
-                    text: model.label !== undefined ? model.label : "Unknown Label"
+                    text: host // !== undefined ? label : "Unknown Label"
                     color: "white"
+                    Component.onCompleted: {
+                        // console.log("Row Data:", host, label, tag, grpc_port, grpc_username, grpc_password);
+                    }
                 }
             }
         }
