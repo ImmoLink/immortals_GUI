@@ -41,21 +41,67 @@ void AgentModel::loadAgents()
         qDebug() << "Error loading agents:" << lastError().text();
     }
     else {
-        qDebug() << "First Row Data:" << record(0); // Check the label field of the first row
         qDebug() << "Query Executed Successfully:" << query.isActive();
         qDebug() << "Number of Rows Retrieved:" << rowCount();
     }
 
-    // Output the data of each row
-    for (int i = 0; i < rowCount(); ++i) {
-        qDebug() << "Row Data:" << record(i).value("host").toString()
-            << record(i).value("label").toString()
-            << record(i).value("tag").toString()
-            << record(i).value("grpc_port").toInt()
-            << record(i).value("grpc_username").toString()
-            << record(i).value("grpc_password").toString();
-    }
     qDebug() << "Agents Loaded Successfully";
+}
+
+bool AgentModel::insertAgent(const QString& host, const QString& label, const QString& tag,
+    int grpcPort, const QString& grpcUsername, const QString& grpcPassword) {
+    QSqlQuery query;
+    query.prepare(SQL_INSERT);
+    query.bindValue(":host", host);
+    query.bindValue(":label", label);
+    query.bindValue(":tag", tag);
+    query.bindValue(":grpcPort", grpcPort);
+    query.bindValue(":grpcUsername", grpcUsername);
+    query.bindValue(":grpcPassword", grpcPassword);
+
+    if (!query.exec()) {
+        qDebug() << "Error executing query:" << query.lastError().text();
+        return false;
+    }
+
+    loadAgents();
+    return true;
+}
+
+bool AgentModel::deleteAgent(int id) {
+    qDebug() << "Deleting Agent ID: " << id;
+    QSqlQuery query;
+    query.prepare(SQL_DELETE);
+    query.bindValue(":id", id);
+
+    if (!query.exec()) {
+        qDebug() << "Error executing query:" << query.lastError().text();
+        return false;
+    }
+
+    loadAgents();
+    return true;
+}
+
+bool AgentModel::updateAgent(int id, const QString& host, const QString& label, const QString& tag,
+    int grpcPort, const QString& grpcUsername, const QString& grpcPassword) {
+    QSqlQuery query;
+    query.prepare(SQL_UPDATE);
+    query.bindValue(":id", id);
+    query.bindValue(":host", host);
+    query.bindValue(":label", label);
+    query.bindValue(":tag", tag);
+    query.bindValue(":grpcPort", grpcPort);
+    query.bindValue(":grpcUsername", grpcUsername);
+    query.bindValue(":grpcPassword", grpcPassword);
+
+    if (!query.exec()) {
+        qDebug() << "Error executing query:" << query.lastError().text();
+        return false;
+    }
+
+    loadAgents();
+    return true;
 }
 
 QHash<int, QByteArray> AgentModel::roleNames() const
@@ -64,11 +110,11 @@ QHash<int, QByteArray> AgentModel::roleNames() const
     for (int i = 0; COLUMN_NAMES[i] != nullptr; ++i) {
         roleNames[Qt::UserRole + i + 1] = COLUMN_NAMES[i];
     }
-    qDebug() << "RoleNames: " << roleNames;
     return roleNames;
 }
 
 const char* AgentModel::COLUMN_NAMES[] = {
+    "id",
     "host",
     "label",
     "tag",
@@ -78,4 +124,9 @@ const char* AgentModel::COLUMN_NAMES[] = {
     nullptr // Null-terminated array
 };
 
-const char* AgentModel::SQL_SELECT = "SELECT host, label, tag, grpc_port, grpc_username, grpc_password FROM agents";
+const char* AgentModel::SQL_SELECT = "SELECT id, host, label, tag, grpc_port, grpc_username, grpc_password FROM agents";
+const char* AgentModel::SQL_INSERT = "INSERT INTO agents (host, label, tag, grpc_port, grpc_username, grpc_password) "
+"VALUES (:host, :label, :tag, :grpcPort, :grpcUsername, :grpcPassword)";
+const char* AgentModel::SQL_DELETE = "DELETE FROM agents WHERE id=:id";
+const char* AgentModel::SQL_UPDATE = "UPDATE agents SET host = :host, label = :label, tag = :tag,"
+"grpc_port = :grpcPort, grpc_username = :grpcUsername, grpc_password = :grpcPassword WHERE id = :id";

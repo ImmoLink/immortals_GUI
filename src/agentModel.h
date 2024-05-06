@@ -14,7 +14,11 @@ public:
     explicit AgentModel(QObject *parent=nullptr);
 
     // Function to load agents from the database
-    void loadAgents();
+    Q_INVOKABLE void loadAgents();
+    Q_INVOKABLE bool insertAgent(const QString& host, const QString& label, const QString& tag, int grpcPort, const QString& grpcUsername, const QString& grpcPassword);
+    Q_INVOKABLE bool updateAgent(int id, const QString& host, const QString& label, const QString& tag, int grpcPort, const QString& grpcUsername, const QString& grpcPassword);
+    Q_INVOKABLE bool deleteAgent(int id);
+
     QHash<int, QByteArray> roleNames() const;
     QVariant data(const QModelIndex& index, int role) const;
 
@@ -25,6 +29,9 @@ public slots:
 private:
     const static char* COLUMN_NAMES[];
     const static char* SQL_SELECT;
+    const static char* SQL_INSERT;
+    const static char* SQL_DELETE;
+    const static char* SQL_UPDATE;
 };
 
 #endif
