@@ -71,6 +71,3 @@ install(TARGETS Immortals_GUIApp
 # make IDEs aware of the QML import path
 set(QML_IMPORT_PATH ${PROJECT_BINARY_DIR}/qml CACHE PATH
     "Path to the custom QML components defined by the project")
-
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/content/icons DESTINATION ${CMAKE_BINARY_DIR}/qml/content/)

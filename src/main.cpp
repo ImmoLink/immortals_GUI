@@ -4,12 +4,12 @@
 #include <QQmlContext>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QtSql>
 #include <grpcpp/grpcpp.h>
 
 #include "app_environment.h"
 #include "import_qml_components_plugins.h"
 #include "import_qml_plugins.h"
+
 #include "initdb.h"
 #include "agentModel.h"
 
@@ -21,14 +21,11 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    qmlRegisterType<InitDb>("com.example", 1, 0, "InitDb");
+    // qmlRegisterType<InitDb>("com.example", 1, 0, "InitDb");
+    qmlRegisterType<AgentModel>("com.example", 1, 0, "AgentModel");
 
     InitDb db;
     // db.initDb();
-
-    AgentModel agentModel;
-
-    engine.rootContext()->setContextProperty("agentModel", &agentModel);
 
     const QUrl url(u"qrc:/qt/qml/Main/main.qml"_qs);
     QObject::connect(
