@@ -17,4 +17,6 @@ qt6_add_qml_module(content
         Grpcbox.qml
     RESOURCES
         fonts/fonts.txt
+        icons/menu.png
+        icons/plus.png
 )

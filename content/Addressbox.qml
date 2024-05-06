@@ -3,6 +3,9 @@ import QtQuick.Controls 6.5
 import QtQuick.Layouts
 
 Rectangle {
+    property var agentId: null
+    property alias agentHost: hostname.text
+    
     id: addressbox
     color: "#ffffff"
     radius: 15
@@ -10,6 +13,7 @@ Rectangle {
     ToolBar {
         id: toolBar
         width: parent.width
+
         Text {
             text: qsTr("Address")
             font.pixelSize: 16

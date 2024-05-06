@@ -2,14 +2,21 @@ import QtQuick 6.5
 import QtQuick.Layouts
 import QtQuick.Controls 6.5
 import Immortals_GUI
+import com.example 1.0
 
 Rectangle {
     width: 350
     height: 700
     anchors.leftMargin: 30
+
+    AgentModel {
+        id: agentModel // This assigns an id to the instance, allowing you to refer to it elsewhere in the QML file
+    }
+
     ToolBar {
         id: toolBar
         width: parent.width
+
         Text {
             id: text1
             text: qsTr("Agents")
@@ -24,7 +31,13 @@ Rectangle {
             height: parent.height
             anchors.right: parent.right
             icon.source: "icons/plus.png"
-            onClicked: popup.open()
+            onClicked: {
+                popup.open();
+                addressbox.agentId = null;
+                addressbox.agentHost = null;
+                generalbox.label = null; 
+                generalbox.tags = null;
+            }
         }
     }
 
@@ -51,6 +64,7 @@ Rectangle {
 
         contentItem:
             ColumnLayout {
+
                 Addressbox {
                     id: addressbox
                     Layout.alignment: Qt.AlignCenter
@@ -71,8 +85,31 @@ Rectangle {
                     Layout.preferredHeight: 230
                     Layout.preferredWidth: 300
                 }
+                
+                Button {
+                    text: "Submit"
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.bottomMargin: 10
+                    onClicked: { 
+                        if (addressbox.agentId) { 
+                            var success = agentModel.updateAgent(addressbox.agentId, addressbox.agentHost, generalbox.label, generalbox.tags, 1234, "newuser", "newpassword");
+                            if (success) {
+                                console.log("Agent updated successfully!");
+                            } else {
+                                console.error("Failed to update agent.");
+                            }
+                        }else {
+                            var success = agentModel.insertAgent(addressbox.agentHost, generalbox.label, generalbox.tags, 1234, "newuser", "newpassword");
+                            if (success) {
+                                console.log("Agent added successfully!");
+                            } else {
+                                console.error("Failed to add agent.");
+                            }
+                        }
+                        popup.close()
+                    }
+                }
             }
-
         enter: Transition {
             NumberAnimation { property: "opacity"; from: 0.0; to: 1.0 }
         }
@@ -88,7 +125,6 @@ Rectangle {
         width: parent.width
         height: 300
         model: agentModel // Use the model retrieved from c++
-        Component.onCompleted: {console.log(agentModel.roleNames())}
 
         delegate: Item {
             width: listView.width
@@ -100,13 +136,35 @@ Rectangle {
                 color: "lightblue"
 
                 Text {
-                    anchors.centerIn: parent
-                    text: host // !== undefined ? label : "Unknown Label"
-                    color: "white"
-                    Component.onCompleted: {
-                        // console.log("Row Data:", host, label, tag, grpc_port, grpc_username, grpc_password);
-                    }
+                    anchors.left: parent.left
+                    leftPadding: 15
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: label !== undefined ? label : "Unknown Host"
                 }
+
+                Button {
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    flat: true
+                    icon.source: "icons/menu.png"
+                    width: 64
+                    onClicked: agentMenu.popup()
+                }
+            }
+
+            Menu {
+                id: agentMenu
+                MenuItem { text: "Select"}
+                MenuItem { text: "Terminal"}
+                MenuItem { text: "Edit"; onClicked: {popup.open(); fillFieldsWithData();}}
+                MenuItem { text: "Delete"; onClicked: agentModel.deleteAgent(id)}
+            }
+
+            function fillFieldsWithData() {
+                addressbox.agentId = id
+                addressbox.agentHost = host
+                generalbox.label = label
+                generalbox.tags = tag
             }
         }
     }

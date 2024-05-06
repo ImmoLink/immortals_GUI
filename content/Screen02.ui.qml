@@ -3,6 +3,7 @@ import QtQuick.Controls 6.5
 import Immortals_GUI
 import QtQuick.Studio.Components
 
+
 Rectangle {
     id: rectangle
     width: Constants.width
@@ -19,7 +20,9 @@ Rectangle {
 
         Connections {
             target: button
-            onClicked: animation.start()
+            onClicked: {
+                animation.start();
+            }
         }
     }
 

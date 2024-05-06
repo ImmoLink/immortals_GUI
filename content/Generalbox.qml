@@ -3,6 +3,9 @@ import QtQuick.Controls 6.5
 import QtQuick.Layouts
 
 Rectangle {
+    property alias label: labelField.text
+    property alias tags: tagsField.text
+    
     id: generalbox
     color: "#ffffff"
     radius: 25
@@ -19,6 +22,7 @@ Rectangle {
     }
 
     ColumnLayout {
+        id: generalFields
         anchors.top: toolBar.bottom
         spacing: 15
         TextField {id: labelField; placeholderText: qsTr("Label"); Layout.topMargin: 15; Layout.leftMargin: 15}
