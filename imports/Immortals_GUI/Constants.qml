@@ -19,7 +19,13 @@ QtObject {
                                               })
 
     readonly property color backgroundColor: "#EAEAEA"
-
+    
+    readonly property color hoverColor: "lightsteelblue"
+    readonly property real hoverOpacity: 0.9
+    readonly property color pressedColor: "blue"
+    readonly property real pressedOpacity: 0.8
+    readonly property color disabledColor: "gray"
+    readonly property real disabledOpacity: 0.5
 
     property StudioApplication application: StudioApplication {
         fontPath: Qt.resolvedUrl("../../content/" + relativeFontDirectory)
