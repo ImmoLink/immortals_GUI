@@ -12,6 +12,12 @@ public:
 
 public slots:
     void initDb();
+
+private:
+    const static char* SQL_AGENTS_TABLE;
+    const static char* SQL_INSERT_AGENT;
+    const static char* SQL_NODES_TABLE;
+    const static char* SQL_INSERT_NODE;
 };
 
 #endif // INITDB_H

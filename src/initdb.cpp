@@ -3,14 +3,11 @@
 
 InitDb::InitDb(QObject* parent) : QObject(parent)
 {
-
-    QString dbName = "immo.db"; // Database file name
-
-    // Construct the absolute path to the database file
+    QString dbName = "immo.db";
     QString dbPath = QDir::currentPath() + "/" + dbName;
-
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlQuery query;
+
     db.setDatabaseName(dbPath);
 
     if (!db.open()) {
@@ -21,10 +18,15 @@ InitDb::InitDb(QObject* parent) : QObject(parent)
         qDebug() << "Database Found:" << db.databaseName();
     }
 
-    
-    QSqlQuery query;
-    if (!query.exec("CREATE TABLE IF NOT EXISTS agents (id INTEGER PRIMARY KEY AUTOINCREMENT, host TEXT, label TEXT, tag TEXT, grpc_port INTEGER, grpc_username TEXT, grpc_password TEXT)")) {
+    query.prepare(SQL_AGENTS_TABLE);
+    if (!query.exec()) {
         qDebug() << "Error creating agents table:" << query.lastError().text();
+        return;
+    }
+
+    query.prepare(SQL_NODES_TABLE);
+    if (!query.exec()) {
+        qDebug() << "Error creating nodes table:" << query.lastError().text();
         return;
     }
 }
@@ -32,10 +34,9 @@ InitDb::InitDb(QObject* parent) : QObject(parent)
 void InitDb::initDb()
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO agents (host, label, tag, grpc_port, grpc_username, grpc_password) "
-        "VALUES (:host, :label, :tag, :grpc_port, :grpc_username, :grpc_password)");
 
-    // Example data
+    query.prepare(SQL_INSERT_AGENT);
+
     query.bindValue(":host", "localhost");
     query.bindValue(":label", "Agent 1");
     query.bindValue(":tag", "tag1");
@@ -43,12 +44,35 @@ void InitDb::initDb()
     query.bindValue(":grpc_username", "user1");
     query.bindValue(":grpc_password", "pass1");
 
-    if (query.exec())
+    if (!query.exec())
     {
-        qDebug() << "Database initialization Completed";
+        qDebug() << "Error inserting agents:" << query.lastError().text();
     }
-    else
+    int agentId = query.lastInsertId().toInt();
+    qDebug() << "Agent ID:" << agentId;
+
+    query.prepare(SQL_INSERT_NODE);
+
+    query.bindValue(":name", "table");
+    query.bindValue(":agentID", agentId);
+    query.bindValue(":clientID", "14633310");
+    query.bindValue(":is_online", 1);
+
+    if (!query.exec())
     {
-        qDebug() << "addPerson error:" << query.lastError();
+        qDebug() << "Error inserting nodes:" << query.lastError().text();
     }
+
 }
+
+const char* InitDb::SQL_AGENTS_TABLE = "CREATE TABLE IF NOT EXISTS agents (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+"host TEXT, label TEXT, tag TEXT, grpc_port INTEGER, grpc_username TEXT, grpc_password TEXT)";
+
+const char* InitDb::SQL_INSERT_AGENT = "INSERT INTO agents (host, label, tag, grpc_port, grpc_username, grpc_password) "
+"VALUES (:host, :label, :tag, :grpc_port, :grpc_username, :grpc_password)";
+
+const char* InitDb::SQL_NODES_TABLE = "CREATE TABLE IF NOT EXISTS nodes (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+"name TEXT, agentID INTEGER UNIQUE, clientID TEXT, is_online INTEGER)";
+
+const char* InitDb::SQL_INSERT_NODE = "INSERT INTO nodes (name, agentID, clientID, is_online) "
+"VALUES (:name, :agentID, :clientID, :is_online)";
