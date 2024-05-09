@@ -21,6 +21,10 @@ qt_add_executable(Immortals_GUIApp
     src/main.cpp 
     src/initdb.cpp
     src/agentModel.cpp
+    src/nodeModel.cpp
+    src/immoClient.cpp
+    src/immo.grpc.pb.cc
+    src/immo.pb.cc
 )
 
 qt_add_resources(Immortals_GUIApp "configuration"
