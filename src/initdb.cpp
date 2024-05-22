@@ -72,7 +72,7 @@ const char* InitDb::SQL_INSERT_AGENT = "INSERT INTO agents (host, label, tag, gr
 "VALUES (:host, :label, :tag, :grpc_port, :grpc_username, :grpc_password)";
 
 const char* InitDb::SQL_NODES_TABLE = "CREATE TABLE IF NOT EXISTS nodes (id INTEGER PRIMARY KEY AUTOINCREMENT, "
-"name TEXT, agentID INTEGER UNIQUE, clientID TEXT, is_online INTEGER)";
+"name TEXT, agentID INTEGER, clientID TEXT UNIQUE, is_online INTEGER)";
 
 const char* InitDb::SQL_INSERT_NODE = "INSERT INTO nodes (name, agentID, clientID, is_online) "
 "VALUES (:name, :agentID, :clientID, :is_online)";

@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<ImmoClient>("immo.client", 1, 0, "ImmoClient");
 
     InitDb db;
-    //db.initDb();
+    // db.initDb();
 
     const QUrl url(u"qrc:/qt/qml/Main/main.qml"_qs);
     QObject::connect(
