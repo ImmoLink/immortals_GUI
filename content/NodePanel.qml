@@ -18,93 +18,57 @@ Rectangle {
         y: 169
         width: 1100
         height: 320
-        flickableDirection: Flickable.HorizontalFlick
-        boundsBehavior: Flickable.DragOverBounds
-        contentWidth: nodeListView.width
         anchors.horizontalCenter: parent.horizontalCenter
-
+        flickableDirection: Flickable.HorizontalFlick
+        boundsBehavior: Flickable.StopAtBounds // DragOverBounds
+        contentWidth: nodeListView.width + addButton.width
         clip: true
 
-        ListView {
-            id: nodeListView
-            width: contentWidth
-            height: 300
-            orientation: ListView.Horizontal
-            model: nodeModel
-
-            delegate: ItemDelegate {
-                id: control
-                height: 300
-                width: 300
-
-                background: Rectangle {
-                    width: 300
-                    height: 300
-                    radius: 15
-                    implicitHeight: 40
-                    opacity: enabled ? 1 : 0.3
-                    color: nodeListView.currentIndex == index ? "lightblue": control.down ? "#dddedf" : control.hovered ? Constants.hoverColor : "#eeeeee"
-                }
-
-                contentItem: Text {
-                    anchors.centerIn: parent
-                    text: name !== undefined ? name : "Unknown Host"
-                }
-
-                Button {
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    flat: true
-                    icon.source: "icons/menu.png"
-                    width: 64
-                    onClicked: nodeMenu.popup()
-                }
-
-                Menu {
-                    id: nodeMenu
-                    MenuItem { text: "Select"}
-                    MenuItem { text: "Edit"; onClicked: {agentPopup.open(); fillFieldsWithData();}}
-                    MenuItem { text: "Delete"; onClicked: nodeModel.deleteNode(id, selectedAgentID)}
-                }
-            }
+        NodeListView { 
+            id: nodeListView 
+            property alias agentId: nodePanel.selectedAgentID
+            property alias nodeName: nodePopup.nodeName
+            property alias nodeClientID: nodePopup.nodeClientID
         }
-        
-        Button {
+ 
+        Rectangle {
+            id: addButton
             anchors.left: nodeListView.right
             visible: selectedAgentID !== -1
             height: 300
             width: 300
-            text: qsTr("Add Node")
-            onClicked: {
-                agentPopup.open();
-                agentPopup.agentId = null;
-                agentPopup.agentHost = null;
-                agentPopup.agentLabel = null; 
-                agentPopup.agentTags = null;
-            }
+            color: "white"
+            radius: 15
+            opacity: 0.6
+            border.color: "black"
 
             MouseArea {
                 id: mouseArea
                 anchors.fill: parent
                 hoverEnabled: true
 
-                onEntered: {
-                    parent.background.color = Constants.hoverColor;
-                    parent.background.opacity = Constants.hoverOpacity;
-                }
-
-                onExited: {
-                    parent.background.color = "white";
+                onEntered: { parent.color = Constants.hoverColor; parent.opacity = Constants.hoverOpacity }
+                onExited: { parent.color = "white" }
+                onClicked: { 
+                    console.log("Add Node Clicked...") ; 
+                    nodePopup.open(); 
+                    nodePopup.edit = false;
+                    nodePopup.nodeName = null; 
+                    nodePopup.nodeClientID = null
                 }
             }
 
-            background: Rectangle {
+            NodePopup {
+                id: nodePopup
+                anchors.centerIn: parent
+                topInset: 10
+                leftInset: 10
+                bottomInset: 10
+                rightInset: 10
                 width: 300
                 height: 300
-                color: "white"
-                radius: 15
-                opacity: 0.6
-                border.color: "black"
+                modal: true
+                focus: true
             }
         }
     }
