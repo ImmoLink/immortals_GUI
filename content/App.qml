@@ -3,6 +3,7 @@
 
 import QtQuick 6.5
 import Immortals_GUI
+import node.model 1.0
 
 Window {
     id: window
@@ -11,22 +12,28 @@ Window {
     visible: true
     title: "Immortals_GUI"
 
+    NodeModel {
+        id: nodeModel
+    }
+
     Screen01 {
         id: homeScreen
+        visible: true
     }
 
     Screen02 {
         id: autoScreen
         visible: false
     }
-
+    
     AgentPanel {
+        id: agentPanel
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
     }
 
     ImmoPanel {
-        id: panel
+        id: immoPanel
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
     }

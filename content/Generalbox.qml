@@ -3,8 +3,8 @@ import QtQuick.Controls 6.5
 import QtQuick.Layouts
 
 Rectangle {
-    property alias label: labelField.text
-    property alias tags: tagsField.text
+    property alias agentLabel: labelField.text
+    property alias agentTags: tagsField.text
     
     id: generalbox
     color: "#ffffff"

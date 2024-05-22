@@ -1,8 +1,9 @@
 import QtQuick 6.5
 import QtQuick.Controls 6.5
-import Immortals_GUI
 import QtQuick.Studio.Components
 
+import Immortals_GUI
+import immo.client 1.0
 
 Rectangle {
     id: rectangle
@@ -11,17 +12,21 @@ Rectangle {
 
     color: Constants.backgroundColor
 
+    ImmoClient {
+        id: immoClient
+    }
+
     Button {
         id: button
         text: qsTr("Press Me")
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.centerIn: parent
         checkable: true
 
         Connections {
             target: button
             onClicked: {
                 animation.start();
+                runClient();
             }
         }
     }
@@ -53,6 +58,11 @@ Rectangle {
                 from: "#2294c6"
             }
         }
+    }
+
+    function runClient() {
+        var response = immoClient.discoverNode("reza", "14633310");
+        console.log(response);
     }
 
     states: [

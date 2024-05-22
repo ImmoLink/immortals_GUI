@@ -11,7 +11,12 @@ qt6_add_qml_module(content
         Screen01.ui.qml
         Screen02.ui.qml
         ImmoPanel.ui.qml
+        AgentListView.qml
+        NodeListView.qml
+        AgentPopup.qml
+        NodePopup.qml
         AgentPanel.qml
+        NodePanel.qml
         Addressbox.qml
         Generalbox.qml
         Grpcbox.qml
@@ -19,4 +24,5 @@ qt6_add_qml_module(content
         fonts/fonts.txt
         icons/menu.png
         icons/plus.png
+        icons/agent.png
 )
